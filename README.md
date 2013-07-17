@@ -22,6 +22,11 @@ The list of Jekyll's sites is contained in customizable variable `org-protocol-j
          :working-suffix (".md", ".markdown"))))
 ```
 
-where `:base-url` is the base URL of the Jekyll's site (e.g. `http://www.example.com/project`), `:permalink` is the [permalink](http://jekyllrb.com/docs/permalinks) to generate URLs for the site, `:working-directory` is the local working directory of the site, `:working-suffix` is the acceptable suffixes for the file converted to HTML by Jekyll. `:working-suffix` can be a list of suffixes, e.g. `(".md", ".markdown")`, or one suffix, e.g. `".org"`. By default, only files with suffix `".html"` are taken into account.
+where
+
+- `:base-url` is the base URL of the Jekyll's site (e.g. `http://www.example.com/project`)
+- `:permalink` is the [permalink](http://jekyllrb.com/docs/permalinks) to generate URLs for the site
+- `:working-directory` is the local working directory of the site
+- `:working-suffix` is the acceptable suffixes for the file converted to HTML by Jekyll. `:working-suffix` can be a list of suffixes, e.g. `(".md", ".markdown")`, or one suffix, e.g. `".org"`. By default, only files with suffix `".html"` are taken into account.
 
 The easiest way to install `org-protocol-jekyll` is through [Marmalade Package Archive](http://marmalade-repo.org).
