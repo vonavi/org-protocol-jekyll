@@ -22,8 +22,11 @@
 
 ;;; Commentary:
 
-;; `org-protocol-jekyll' uses the sub-protocol \"jekyll\" and maps
-;;  URLs to local filenames defined in `org-protocol-jekyll-alist'.
+;; `org-protocol-jekyll' realizes the \"jekyll\" sub-protocol to open
+;; sources of a site built with Jekyll (URL `http://jekyllrb.com') in
+;; Emacs for editing. `org-protocol-jekyll' uses the sub-protocol
+;; \"jekyll\" and maps URLs to local filenames defined in
+;; `org-protocol-jekyll-alist'.
 ;;
 ;; For details, see `org-protocol.el'.
 
@@ -47,12 +50,12 @@ Possible properties are:
   :permalink         - the permalink to generate URLs for the site
   :working-directory - the local working directory. This is, what
                        base-url will be replaced with.
-  :working-suffix    - acceptable suffixes for the file convertible to
+  :working-suffix    - acceptable suffixes for the file converted to
                        HTML. Can be one suffix or a list of suffixes.
 
 Example:
 
-  (setq org-protocol-project-alist
+  (setq org-protocol-jekyll-alist
         '((\"Jekyll's awesome website.\"
            :base-url \"http://jekyllrb.com\"
            :permalink \"pretty\"
