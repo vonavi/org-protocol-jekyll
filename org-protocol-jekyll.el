@@ -1,8 +1,9 @@
-;;; org-protocol-jekyll.el ---
+;;; org-protocol-jekyll.el --- Jekyll's handler for org-protocol
 
 ;; Copyright (C) 2013 Vladimir S. Ivanov
 
 ;; Author: Vladimir S. Ivanov <ivvl82@gmail.com>
+;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
 
