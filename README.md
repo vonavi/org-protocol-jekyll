@@ -1,6 +1,6 @@
 ## Description
 
-`org-protocol` scans the list of filenames passed to the Emacs server for `org-protocol:/sub-protocol:/` and triggers actions associated with `sub-protocol`. `org-protocol-jekyll` realizes the `jekyll` sub-protocol to open sources of a site built with [Jekyll](http://jekyllrb.com) in Emacs for editing.
+`org-protocol` scans the list of filenames passed to the Emacs server for `org-protocol:/sub-protocol:/` and triggers actions associated with `sub-protocol`. `org-protocol-jekyll` realizes the `jekyll` sub-protocol to open sources of a site built with [Jekyll](http://jekyllrb.com) in Emacs for editing. `org-protocol-jekyll` has been successfully tested with Jekyll 1.0.2.
 
 ## Usage
 
@@ -33,4 +33,6 @@ where
 * `:working-directory` is the local working directory of the site
 * `:working-suffix` is the acceptable suffixes for the file converted to HTML by Jekyll. `:working-suffix` can be a list of suffixes, e.g. `(".md", ".markdown")`, or one suffix, e.g. `".org"`. By default, only files with suffix `".html"` are taken into account.
 
-The easiest way to install `org-protocol-jekyll` is through [Marmalade Package Archive](http://marmalade-repo.org).
+## Installation
+
+[ELPA](http://www.emacswiki.org/emacs/ELPA) affords the easy way to install `org-protocol-jekyll` for Emacs from [MELPA](http://melpa.milkbox.net) or [Marmalade Package Archive](http://marmalade-repo.org).
