@@ -111,8 +111,7 @@ The location for a browser's bookmark should look like this:
               (add-to-list 'suf-list ".html" t 'string=)
 
               ;; Remove trailing slash from the working directory
-              (when (string-match "/$" wdir)
-                (setq wdir (substring wdir 0 -1)))
+              (setq wdir (replace-regexp-in-string "/$" "" wdir))
 
               (mapc (lambda (file)
                       (dolist (add-suffix suf-list)
@@ -150,10 +149,10 @@ extension are avoided."
   (let ((permalink (or (plist-get (cdr blog) :permalink) "date"))
         props file-list)
 
-    (when (string-match "/$" post-url)
-      (setq post-url (concat post-url "index.html")))
+    (setq post-url
+          (replace-regexp-in-string "/$" "/index.html" post-url t)
 
-    (setq permalink
+          permalink
           (cond ((string= permalink "date")
                  "/:categories/:year/:month/:day/:title.html")
                 ((string= permalink "none")
