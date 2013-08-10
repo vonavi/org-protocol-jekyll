@@ -86,9 +86,9 @@ The location for a browser's bookmark should look like this:
   ;; As we enter this function for a match on our protocol, the return
   ;; value defaults to nil.
   (let* ((url (org-link-unescape data))
-         ;; Strip "[?#].*$" if `url' is a redirect with another ending
-         ;; than strip-suffix here:
-         (url1 (substring url 0 (string-match "\\([\\?#].*\\)?$" url)))
+         ;; Strip "[\?#].*\'" if `url' is a redirect with another
+         ;; ending than strip-suffix here:
+         (url1 (replace-regexp-in-string "[\\?#].*\\'" "" url))
          fname)
 
     ;; Note: url1 may still contain `%C3' et al here because browsers
@@ -98,7 +98,7 @@ The location for a browser's bookmark should look like this:
     (catch 'result
       (dolist (blog org-protocol-jekyll-alist)
         (let* ((base-url (plist-get (cdr blog) :base-url))
-               (base-re (concat "^" (regexp-quote base-url) "/?")))
+               (base-re (concat "\\`" (regexp-quote base-url) "/?")))
 
           (when (string-match base-re url1)
             (let* ((site-url (replace-match "/" t t url1))
@@ -111,7 +111,7 @@ The location for a browser's bookmark should look like this:
               (add-to-list 'suf-list ".html" t 'string=)
 
               ;; Remove trailing slash from the working directory
-              (setq wdir (replace-regexp-in-string "/$" "" wdir))
+              (setq wdir (replace-regexp-in-string "/\\'" "" wdir))
 
               (mapc (lambda (file)
                       (dolist (add-suffix suf-list)
@@ -133,11 +133,11 @@ page with PAGE-URL (for post URL's, see
 `org-protocol-jekyll-posts'). The working directory and file
 extension are avoided."
   (let ((permalink (plist-get (cdr blog) :permalink))
-        (end-pos (string-match "\\.html$" page-url)))
+        (end-pos (string-match "\\.html\\'" page-url)))
     (if end-pos
         (list (substring page-url 0 end-pos))
       (when (and (string= permalink "pretty")
-                 (string-match "/$" page-url))
+                 (string-match "/\\'" page-url))
         (list (substring page-url 0 -1)
               (concat page-url "index"))))))
 
@@ -150,7 +150,7 @@ extension are avoided."
         props file-list)
 
     (setq post-url
-          (replace-regexp-in-string "/$" "/index.html" post-url t)
+          (replace-regexp-in-string "/\\'" "/index.html" post-url t)
 
           permalink
           (cond ((string= permalink "date")
@@ -161,7 +161,7 @@ extension are avoided."
                  "/:categories/:year/:y_day/:title.html")
                 ((string= permalink "pretty")
                  "/:categories/:year/:month/:day/:title/index.html")
-                ((string-match "/$" permalink)
+                ((string-match "/\\'" permalink)
                  (concat permalink "index.html"))
                 (t permalink)))
 
@@ -207,7 +207,7 @@ the date and the title for POST-URL, or nil otherwise."
          (token-re (concat ":\\(" (mapconcat 'car template "\\|") "\\)"))
          (slices (mapcar 'regexp-quote (split-string permalink token-re)))
          (len (1- (list-length slices)))
-         (link-re (concat "^" (mapconcat 'identity slices token-re) "$"))
+         (link-re (concat "\\`" (mapconcat 'identity slices token-re) "\\'"))
 
          tokens re-list url-re values tok-alist val-list)
 
@@ -222,7 +222,7 @@ the date and the title for POST-URL, or nil otherwise."
         (push str re-list)
         (push (concat "\\(" re "\\)") re-list)))
     (push (nth 0 slices) re-list)
-    (setq url-re (apply 'concat `("^" ,@re-list "$")))
+    (setq url-re (apply 'concat `("\\`" ,@re-list "\\'")))
 
     ;; TOK-ALIST associates the template values in PERMALINK with the
     ;; corresponding values in POST-URL
