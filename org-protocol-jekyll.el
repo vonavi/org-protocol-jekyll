@@ -4,6 +4,7 @@
 
 ;; Author: Vladimir S. Ivanov <ivvl82@gmail.com>
 ;; Version: 0.1
+;; Package-Requires: ((cl-lib "0.5"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -34,7 +35,7 @@
 ;;; Code:
 
 (require 'org-protocol)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defcustom org-protocol-jekyll-alist nil
   "Map URLs to local filenames for `org-protocol-jekyll' (jekyll).
@@ -206,7 +207,7 @@ the date and the title for POST-URL, or nil otherwise."
          ;; Build regexp LINK-RE matching PERMALINK
          (token-re (concat ":\\(" (mapconcat 'car template "\\|") "\\)"))
          (slices (mapcar 'regexp-quote (split-string permalink token-re)))
-         (len (1- (list-length slices)))
+         (len (1- (cl-list-length slices)))
          (link-re (concat "\\`" (mapconcat 'identity slices token-re) "\\'"))
 
          tokens re-list url-re values tok-alist val-list)
@@ -229,7 +230,7 @@ the date and the title for POST-URL, or nil otherwise."
     (when (string-match url-re post-url)
       (dotimes (i len)
         (push (match-string (- len i) post-url) values))
-      (setq tok-alist (pairlis tokens values))
+      (setq tok-alist (cl-pairlis tokens values))
 
       ;; Assign each variable corresponding to a template value in
       ;; PERMALINK to its value in POST-URL
@@ -246,7 +247,7 @@ the date and the title for POST-URL, or nil otherwise."
                       (cond (month (string-to-number month))
                             (i_month (string-to-number i_month))
                             (short_month
-                             (1+ (position
+                             (1+ (cl-position
                                   (capitalize short_month)
                                   '("Jan" "Feb" "Mar" "Apr"
                                     "May" "June" "July" "Aug"
