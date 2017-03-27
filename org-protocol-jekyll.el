@@ -77,22 +77,32 @@ Example:
                :protocol "jekyll"
                :function org-protocol-jekyll))
 
-(defun org-protocol-jekyll (data)
-  "Process an org-protocol://jekyll:// style url.
+(defun org-protocol-jekyll (fname)
+  "Process an org-protocol://jekyll style url.
+
+Parameter: url
+
+Old-style links such as org-protocol://jekyll://URL are
+also recognized.
 
 The location for a browser's bookmark should look like this:
 
-  javascript:location.href='org-protocol://jekyll://'+ \\
-    encodeURIComponent(location.href)"
+  javascript:location.href = \\
+      \\='org-protocol://jekyll?url=\\='+ \\
+      encodeURIComponent(location.href);
+
+FNAME should be a property list.  If not, an old-style link of the
+form URL can also be used."
   ;; As we enter this function for a match on our protocol, the return
   ;; value defaults to nil.
-  (let* ((url (org-link-unescape data))
-         ;; Strip "[\?#].*\'" if `url' is a redirect with another
-         ;; ending than strip-suffix here:
-         (url1 (replace-regexp-in-string "[\\?#].*\\'" "" url))
-         fname)
+  (let* ((splitparts (org-protocol-parse-parameters fname nil '(:url)))
+         (url (org-protocol-sanitize-uri
+               ;; Strip "[?#].*\'" if `url' is a redirect with another
+               ;; ending than strip-suffix here:
+               (replace-regexp-in-string "[?#].*\\'" ""
+                                         (plist-get splitparts :url)))))
 
-    ;; Note: url1 may still contain `%C3' et al here because browsers
+    ;; Note: url may still contain `%C3' et al here because browsers
     ;; tend to encode `&auml;' in URLs to `%25C3' - `%25' being `%'.
     ;; So the results may vary.
 
@@ -101,8 +111,8 @@ The location for a browser's bookmark should look like this:
         (let* ((base-url (plist-get (cdr blog) :base-url))
                (base-re (concat "\\`" (regexp-quote base-url) "/?")))
 
-          (when (string-match base-re url1)
-            (let* ((site-url (replace-match "/" t t url1))
+          (when (string-match base-re url)
+            (let* ((site-url (replace-match "/" t t url))
                    (wdir (expand-file-name
                           (plist-get (cdr blog) :working-directory)))
                    (suf (plist-get (cdr blog) :working-suffix))

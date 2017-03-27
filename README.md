@@ -7,7 +7,7 @@
 Create a bookmark in browser with the following *"Location"*:
 
 ```js
-javascript:location.href='org-protocol://jekyll://'+
+javascript:location.href='org-protocol://jekyll?url='+
   encodeURIComponent(location.href)
 ```
 
